@@ -3,6 +3,15 @@ import "./App.css";
 
 import FrontPage from "./ui/frontpage";
 
+// background style
+const sectionStyle = {
+  backgroundImage: `url(https://media1.tenor.com/images/194765a761a9bbe6ad26f868c5285d34/tenor.gif?itemid=10632622)`,
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  height: "100vh",
+};
+
 class App extends React.Component {
   state = {
     data: null,
@@ -27,7 +36,11 @@ class App extends React.Component {
   };
 
   render() {
-    return <FrontPage style=".App" />;
+    return (
+      <div className="cComponent" style={sectionStyle}>
+        <FrontPage style=".App" />
+      </div>
+    );
   }
 }
 

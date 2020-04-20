@@ -52,3 +52,16 @@
   list-style: none;
   color: black;
 }
+
+.card {
+  align-items: center;
+  padding-top: 30px;
+  margin: 20px;
+  background-color: #737373;
+}
+
+.cardContents {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

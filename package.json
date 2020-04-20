@@ -23,6 +23,7 @@
     "epress": "0.0.1-security",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
+    "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.15",
     "morgan": "^1.10.0"
   }

@@ -4,12 +4,16 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const _ = require("lodash");
+var ffmpeg = require("fluent-ffmpeg");
+var command = ffmpeg();
 
 const app = express();
 
+// Use temp file path so vanilla song files dont get saved
 app.use(
   fileUpload({
-    createParentPath: true,
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
   })
 );
 
@@ -29,15 +33,7 @@ app.get("/express_backend", (req, res) => {
   res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
 
-app.post("/test", (req, res) => {
-  if (!req.body) {
-    console.log("req.body is null");
-    return res.sendStatus(400);
-  }
-  console.log(req.body);
-  res.send({ message: `you sent: ${req.body.message}` });
-});
-
+// Upload song endpoint
 app.post("/upload-song", async (req, res) => {
   try {
     if (!req.files) {
@@ -46,9 +42,35 @@ app.post("/upload-song", async (req, res) => {
         message: "No file uploaded",
       });
     } else {
+      console.log(req.body);
+      //save song in server temporarily
       let song = req.files.song;
-      song.mv("./songs/" + song.name);
 
+      //get the speed and reverb values
+      let speed = req.body.speed;
+      let reverb = req.body.reverb;
+
+      console.log("reverb: " + reverb);
+
+      //Add modifications to audio file and save it
+      if (reverb) {
+        ffmpeg()
+          .input(song.tempFilePath)
+          .input("./IRReverbFiles/WireGrind_m_0.3s_06w_100Hz_02m.wav")
+          .outputOptions(`-lavfi afir,atempo=${speed},asetrate=44100*${speed}`)
+          .save("./SlowedSongs/" + song.name);
+      } else {
+        ffmpeg()
+          .input(song.tempFilePath)
+          .outputOptions([`-af atempo=${speed}`, `-af asetrate=44100*${speed}`])
+          .save("./SlowedSongs/" + song.name);
+      }
+
+      console.log(
+        req.files.song.name +
+          " has been uploaded | Size: " +
+          req.files.song.size
+      );
       res.send({
         status: true,
         message: "File is uploaded",

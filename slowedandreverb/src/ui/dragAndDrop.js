@@ -5,9 +5,7 @@ import Button from "@material-ui/core/Button";
 
 const audioFileMaxSize = 300000000; // bytes
 
-// stage variables that will be sent in post request
-const config = { headers: { "Content-Type": "multipart/form-data" } };
-let formData = new FormData();
+// This is the file object that will be sent to the server
 var currFile;
 
 function onDrop(acceptedFiles, rejectedFiles) {
@@ -23,18 +21,6 @@ function onDrop(acceptedFiles, rejectedFiles) {
     currFile = acceptedFiles[0];
   }
 }
-
-const onSubmit = async (acceptedFiles) => {
-  formData.append("song", currFile);
-
-  console.log("submit files: " + currFile);
-
-  fetch("/upload-song", {
-    method: "POST",
-    body: formData,
-  });
-  formData = new FormData();
-};
 
 const getColor = (props) => {
   if (props.isDragAccept) {
@@ -63,6 +49,7 @@ const Container = styled.div`
   color: #bdbdbd;
   outline: none;
   transition: border 0.24s ease-in-out;
+  margin: 20px;
 `;
 
 function StyledDropzone(props) {
@@ -93,15 +80,8 @@ function StyledDropzone(props) {
         </div>
         <ul className="listFormat">{file}</ul>
       </Container>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={(acceptedFiles) => onSubmit(acceptedFiles)}
-      >
-        Submit
-      </Button>
     </div>
   );
 }
 
-export default StyledDropzone;
+export { StyledDropzone, currFile };
