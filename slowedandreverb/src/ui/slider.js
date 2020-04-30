@@ -42,30 +42,30 @@ const PrettoSlider = withStyles({
   },
 })(Slider);
 
-export default function CustomizedSlider({ speed }) {
-  const classes = useStyles();
+//const classes = useStyles();
 
-  const handleSliderChange = (event, value) => {
-    speed = value;
-    this.setState({ percent: value * 100 + "%" });
-    if (speed >= 0.9) {
-      this.setState({ message: "Recommended" });
-    } else if (speed >= 0.8) {
-      this.setState({ message: "Hypnotizing" });
-    } else {
-      this.setState({ message: "Grab the lean my nigga" });
-    }
-  };
+export class CustomizedSlider extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-  return (
-    <PrettoSlider
-      aria-label="Choose your speed"
-      defaultValue={1}
-      valueLabelDisplay="on"
-      step={0.01}
-      min={0.7}
-      max={1}
-      onChange={handleSliderChange}
-    />
-  );
+  handleChange(e, value) {
+    console.log(value);
+    this.props.onChange(value);
+  }
+
+  render() {
+    return (
+      <PrettoSlider
+        aria-label="Choose your speed"
+        defaultValue={this.props.defaultValue}
+        valueLabelDisplay="off"
+        step={this.props.step}
+        min={this.props.min}
+        max={this.props.max}
+        onChange={this.handleChange}
+      />
+    );
+  }
 }

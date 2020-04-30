@@ -1,12 +1,11 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
-import Button from "@material-ui/core/Button";
 
 const audioFileMaxSize = 300000000; // bytes
 
 // This is the file object that will be sent to the server
-var currFile;
+var currFile = undefined;
 
 function onDrop(acceptedFiles, rejectedFiles) {
   if (
@@ -50,6 +49,7 @@ const Container = styled.div`
   outline: none;
   transition: border 0.24s ease-in-out;
   margin: 20px;
+  opacity: 0.9;
 `;
 
 function StyledDropzone(props) {
