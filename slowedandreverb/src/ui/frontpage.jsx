@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import { StyledDropzone, currFile } from "./dragAndDrop";
+import { StyledDropzone } from "./dragAndDrop";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
@@ -8,29 +8,67 @@ import CardContent from "@material-ui/core/CardContent";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { CustomizedSlider } from "./slider";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
 
 var download = require("downloadjs");
 
 let formData = new FormData();
+
+var speed;
+var reverb;
+var songName;
+
+let donateButton = (
+  <form
+    action="https://www.paypal.com/cgi-bin/webscr"
+    method="post"
+    target="_top"
+  >
+    <input type="hidden" name="cmd" value="_donations" />
+    <input type="hidden" name="business" value="7BJVYZ6MYY952" />
+    <input type="hidden" name="currency_code" value="USD" />
+    <input
+      type="image"
+      src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+      border="0"
+      name="submit"
+      title="PayPal - The safer, easier way to pay online!"
+      alt="Donate with PayPal button"
+    />
+    <img
+      alt=""
+      border="0"
+      src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+      width="1"
+      height="1"
+    />
+  </form>
+);
 
 class FrontPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       speedMessage: "Slow it down some",
-      reverbMessage: "Recommended",
+      reverbMessage: "None",
       speed: 1,
       reverb: 0,
       reverbChecked: false,
+      file: undefined,
       blob: undefined,
-      blobUrl: undefined
+      blobUrl: undefined,
+      inProgress: false,
+      showControls: true,
     };
     this.sendFileToServer = this.sendFileToServer.bind(this);
     this.reverbCheckbox = this.reverbCheckbox.bind(this);
     this.handleSpeedSliderChange = this.handleSpeedSliderChange.bind(this);
     this.handleReverbSliderChange = this.handleReverbSliderChange.bind(this);
+    this.setDropzoneFile = this.setDropzoneFile.bind(this);
+    this.setControls = this.setControls.bind(this);
   }
-
 
   reverbCheckbox() {
     const [checked, setChecked] = React.useState(false);
@@ -56,27 +94,40 @@ class FrontPage extends React.Component {
     );
   }
 
+  // Sends HTTP request for drag and dropped file
   sendFileToServer = async () => {
-    formData.append("song", currFile);
+    formData.append("song", this.state.file);
     formData.append("speed", this.state.speed);
     formData.append("reverb", this.state.reverb);
+    formData.append("fileType", this.state.file.type);
 
+    this.setState({ inProgress: true });
     const res = await fetch("/upload-song", {
       method: "POST",
       body: formData,
     });
-    const blob = await res.blob();
-    this.setState({ blob: blob });
-    //download(blob, "Slowed " + currFile.path);
-    this.setState({ blobUrl: URL.createObjectURL(blob)});
-    formData = new FormData();
+    this.setState({ inProgress: false });
+    if (res.status === 200) {
+      speed = this.state.speed;
+      reverb = this.state.reverb;
+      songName = this.state.file.path;
+      const blob = await res.blob();
+      this.setState({ blob: blob });
+      this.setState({ blobUrl: URL.createObjectURL(blob) });
+      this.setState({ showControls: false });
+      formData = new FormData();
+    } else {
+      let body = await res.json();
+      alert(body.message);
+      formData = new FormData();
+    }
   };
 
   handleSpeedSliderChange(value) {
     this.setState({ speed: value });
-    if (value >= 0.87) {
+    if (value >= 0.91) {
       this.setState({ speedMessage: "Slow it down some" });
-    } else if (value >= 0.75) {
+    } else if (value >= 0.8) {
       this.setState({ speedMessage: "Recommended" });
     } else {
       this.setState({ speedMessage: "Hypnotizing" });
@@ -98,20 +149,18 @@ class FrontPage extends React.Component {
     }
   }
 
+  setDropzoneFile(file) {
+    this.setState({ file: file });
+  }
+
+  setControls() {
+    this.setState({ showControls: true });
+  }
+
   render() {
-    var audioPlayer;
-    if (this.state.blobUrl === undefined) {
-      audioPlayer = <></>;
-    } else {
-      console.log("blob url: " + this.state.blobUrl);
-      audioPlayer = (
-        <audio src={this.state.blobUrl} controls style={{ width: "500px" }}></audio>
-      );
-    }
-    var reverbChecked = this.state.reverbChecked;
     return (
       <div className="Dropzone">
-        <StyledDropzone />
+        <StyledDropzone setFile={this.setDropzoneFile} />
         <Card
           style={{
             backgroundColor: "#bdbdbd",
@@ -122,9 +171,11 @@ class FrontPage extends React.Component {
         >
           <CardContent>
             <div className="cardContents">
-              <Typography fontWeight="fontWeightBold">
-                Speed: {this.state.speed * 100}%
-              </Typography>
+              <div className="center">
+                <Box fontWeight="fontWeightBold" m={0} p={0}>
+                  <Typography>Speed: {this.state.speed * 100}%</Typography>
+                </Box>
+              </div>
               <CustomizedSlider
                 defaultValue={1}
                 step={0.01}
@@ -132,50 +183,106 @@ class FrontPage extends React.Component {
                 max={1}
                 onChange={this.handleSpeedSliderChange}
               />
-              <Typography fontWeight="fontWeightBold">
-                {this.state.speedMessage}
-              </Typography>
+              <div className="center">
+                <Box fontStyle="oblique" m={0} p={0}>
+                  <Typography>{this.state.speedMessage}</Typography>
+                </Box>
+              </div>
               <this.reverbCheckbox />
               <div>
-                {reverbChecked ? (
+                {this.state.reverbChecked ? (
                   <>
-                    <Typography fontWeight="fontWeightBold">
-                      Reverb: {this.state.reverb}
-                    </Typography>
+                    <div className="center">
+                      <Box fontWeight="fontWeightBold" m={0} p={0}>
+                        <Typography>Reverb: {this.state.reverb}</Typography>
+                      </Box>
+                    </div>
                     <CustomizedSlider
-                      defaultValue={this.state.reverb}
+                      value={this.state.reverb}
                       step={1}
                       min={0}
                       max={100}
                       onChange={this.handleReverbSliderChange}
                     />
-                    <Typography fontWeight="fontWeightBold">
-                      {this.state.reverbMessage}
-                    </Typography>
+                    <div className="center">
+                      <Box fontStyle="oblique" m={0} p={0}>
+                        <Typography>{this.state.reverbMessage}</Typography>
+                      </Box>
+                    </div>
                   </>
                 ) : (
                   <></>
                 )}
               </div>
-              <Button
-                style={{
-                  backgroundColor: "#8c2fa8",
-                }}
-                variant="contained"
-                color="primary"
-                onClick={(acceptedFiles) => this.sendFileToServer()}
-              >
-                Slow it Down
-              </Button>
+              <div className="center">
+                <Box m={1}>
+                  <Button
+                    disabled={this.state.file === undefined}
+                    style={{
+                      backgroundColor: "#8c2fa8",
+                    }}
+                    variant="contained"
+                    color="primary"
+                    onClick={(acceptedFiles) => this.sendFileToServer()}
+                  >
+                    Slow it Down
+                  </Button>
+                </Box>
+              </div>
             </div>
+            {this.state.blob && (
+              <>
+                <Divider />
+                <div className="center">
+                  <Box m={1}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        download(
+                          this.state.blob,
+                          "Slowed " + this.state.file.path
+                        )
+                      }
+                    >
+                      Download
+                    </Button>
+                  </Box>
+                </div>
+                <div className="center">
+                  <Box m={1}>
+                    <audio
+                      src={this.state.blobUrl}
+                      controls
+                      style={{ width: "390px" }}
+                    ></audio>
+                  </Box>
+                </div>
+                <Box mb={1}>
+                  <Divider />
+                </Box>
+              </>
+            )}
+            <div className="center">{donateButton}</div>
           </CardContent>
         </Card>
-        <div style={{float: "left"}}>
-        {audioPlayer}
-        </div>
-        <div style={{float: "left"}}>
-        {this.state.blob && <Button style={{backgroundColor: "#8c2fa8"}} variant="contained" color="primary" onClick={() => download(this.state.blob, "Slowed " + currFile.path)}>Download</Button>}
-        </div>
+        {this.state.inProgress && <LinearProgress />}
+        {this.state.blob ? (
+          <>
+            <div className="center">
+              <Typography>{songName}</Typography>
+            </div>
+            <div className="center">
+              <Typography>
+                Speed: {speed * 100}% Reverb: {reverb}
+              </Typography>
+            </div>
+          </>
+        ) : (
+          <Typography className="center">
+            Slow a song down and you'll be able to test it out
+          </Typography>
+        )}
       </div>
     );
   }

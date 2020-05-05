@@ -42,7 +42,7 @@
   width: 400px;
 
   position: fixed;
-  top: 50%;
+  top: 45%;
   left: 50%;
   margin-top: -350px;
   margin-left: -200px;
@@ -51,6 +51,14 @@
 .listFormat {
   list-style: none;
   color: black;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 1;
 }
 
 .card {
@@ -64,4 +72,12 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.bottomPage {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

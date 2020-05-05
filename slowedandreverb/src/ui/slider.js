@@ -1,16 +1,6 @@
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import React from "react";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 300 + theme.spacing(3) * 2,
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-}));
 
 const PrettoSlider = withStyles({
   root: {
@@ -51,7 +41,6 @@ export class CustomizedSlider extends React.Component {
   }
 
   handleChange(e, value) {
-    console.log(value);
     this.props.onChange(value);
   }
 

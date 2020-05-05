@@ -7,20 +7,6 @@ const audioFileMaxSize = 300000000; // bytes
 // This is the file object that will be sent to the server
 var currFile = undefined;
 
-function onDrop(acceptedFiles, rejectedFiles) {
-  if (
-    rejectedFiles &&
-    rejectedFiles.length > 0 &&
-    rejectedFiles[0].size > audioFileMaxSize
-  ) {
-    alert("File is too big");
-  }
-  if (acceptedFiles && acceptedFiles.length > 0) {
-    //console.log(acceptedFiles[0]);
-    currFile = acceptedFiles[0];
-  }
-}
-
 const getColor = (props) => {
   if (props.isDragAccept) {
     return "#00e676";
@@ -61,13 +47,30 @@ function StyledDropzone(props) {
     isDragReject,
     acceptedFiles,
   } = useDropzone({
-    accept: "audio/*",
+    accept: ["audio/mpeg", "audio/ogg", "audio/wav", "image/*"],
     onDrop: onDrop,
     maxSize: audioFileMaxSize,
     maxFiles: 1,
   });
 
-  const file = acceptedFiles.map((file) => <li>{file.path}</li>);
+  const file = acceptedFiles.map((file) => (
+    <p className="listFormat">{file.path}</p>
+  ));
+
+  function onDrop(acceptedFiles, rejectedFiles) {
+    if (
+      rejectedFiles &&
+      rejectedFiles.length > 0 &&
+      rejectedFiles[0].size > audioFileMaxSize
+    ) {
+      alert("File is too big");
+    }
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      currFile = acceptedFiles[0];
+      //this.setFile(acceptedFiles[0]);
+      props.setFile(acceptedFiles[0]);
+    }
+  }
 
   return (
     <div className="container">
@@ -77,8 +80,8 @@ function StyledDropzone(props) {
         <input {...getInputProps()} />
         <div align="center">
           <p>Drop your song file here, or click to choose your file</p>
+          {file}
         </div>
-        <ul className="listFormat">{file}</ul>
       </Container>
     </div>
   );

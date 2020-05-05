@@ -37,56 +37,78 @@ app.get("/express_backend", (req, res) => {
   res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
 
-// Upload song endpoint
-app.post("/upload-song", async (req, res) => {
+app.post("/download-from-link", async (req, res) => {
   try {
-    if (!req.files) {
-      console.log("reached");
-      res.send({
+    if (!req.body) {
+      return res.send({
         status: false,
         message: "No file uploaded",
       });
     } else {
+    }
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+// Upload song endpoint
+app.post("/upload-song", async (req, res) => {
+  try {
+    if (!req.files) {
+      return res.status(500).json({ message: "No file uploaded" });
+    } else {
       //save song in server temporarily
       let song = req.files.song;
-      console.log(song.name);
 
       //get the speed and reverb values
       let speed = req.body.speed;
       let reverb = req.body.reverb;
 
+      //determine file type
+      var type;
+
+      //cant use switch statement bc it uses strict "===" comparison :(
+      if (req.body.fileType == "audio/wav") {
+        type = "wav";
+      } else if (req.body.fileType == "audio/mpeg") {
+        type = "mp3";
+      } else if (req.body.fileType == "audio/ogg") {
+        type = "ogg";
+      } else {
+        return res.status(500).json({
+          message:
+            "Could not determine file type: " +
+            req.body.fileType +
+            " Supported File Types: mp3, wav, ogg",
+        });
+      }
+
       var tempSongFilePath = Math.random().toString(16).slice(2) + ".mp3";
 
       //Add modifications to audio file and save it
       try {
-        // convert to ogg because sox mp3 support is fucked
-        child = execSync(
-          `ffmpeg -i ${song.tempFilePath} -f ogg ${song.tempFilePath}.ogg`
-        );
-
         console.log(`adding slow: ${speed} reverb: ${reverb}`);
         if (reverb != 0) {
           // Add slowed and reverb effects
           // Use --norm to reduce clipping and normalize audio
           child = execSync(
-            `sox --norm ${song.tempFilePath}.ogg ./SlowedSongs/${tempSongFilePath} speed ${speed} reverb ${reverb}`
+            `sox --norm -t ${type} ${song.tempFilePath} ./SlowedSongs/${tempSongFilePath} speed ${speed} reverb ${reverb}`
           );
         } else {
           // Add just slowed effects
           // Use --norm to reduce clipping and normalize audio
           child = execSync(
-            `sox --norm ${song.tempFilePath}.ogg ./SlowedSongs/${tempSongFilePath} speed ${speed}`
+            `sox --norm -t ${type} ${song.tempFilePath} ./SlowedSongs/${tempSongFilePath} speed ${speed}`
           );
         }
+        // this runs if sox returns an error
       } catch (err) {
         console.log(err);
+        return res.status(500).json({
+          message:
+            "Failed to modify audio file, make sure your file is not corrupt",
+        });
       }
-
-      console.log(
-        req.files.song.name +
-          " has been uploaded | Size: " +
-          req.files.song.size
-      );
 
       res.download("./SlowedSongs/" + tempSongFilePath, song.name, function (
         err
@@ -101,11 +123,8 @@ app.post("/upload-song", async (req, res) => {
           });
         }
       });
-
-      // remove temp song file
-      //fs.unlink("./SlowedSongs/" + tempSongFilePath);
     }
   } catch (err) {
-    res.status(500).send(err);
+    return res.status(500).json({ message: err });
   }
 });

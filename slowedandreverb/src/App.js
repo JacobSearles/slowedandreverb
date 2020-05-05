@@ -4,15 +4,6 @@ import Button from "@material-ui/core/Button";
 
 import FrontPage from "./ui/frontpage";
 
-// background style
-const sectionStyle = {
-  backgroundImage: `url(https://i.pinimg.com/originals/ae/0d/3d/ae0d3d761ef0df692bf0b98b1ac35ca2.gif)`,
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  height: "100vh",
-};
-
 const backgroundImages = [
   "https://cdn140.picsart.com/309995500237201.gif?to=min&r=1024",
   "https://i.pinimg.com/originals/ae/0d/3d/ae0d3d761ef0df692bf0b98b1ac35ca2.gif",
@@ -94,6 +85,7 @@ class App extends React.Component {
   }
 
   render() {
+    document.title = "Slow + Reverb Generator";
     return (
       <div
         className="cComponent"
@@ -115,7 +107,7 @@ class App extends React.Component {
         >
           Change Background Gif
         </Button>
-        <FrontPage style=".App" />
+        <FrontPage />
       </div>
     );
   }
