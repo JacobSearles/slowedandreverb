@@ -38,14 +38,8 @@
 }
 
 .Dropzone {
-  height: 200px;
-  width: 400px;
-
-  position: fixed;
-  top: 45%;
-  left: 50%;
-  margin-top: -350px;
-  margin-left: -200px;
+  width: 450px;
+  margin: 0 auto;
 }
 
 .listFormat {

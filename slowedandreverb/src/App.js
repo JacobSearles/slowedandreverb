@@ -86,15 +86,16 @@ class App extends React.Component {
 
   render() {
     document.title = "Slow + Reverb Generator";
-    return (
-      <div
-        className="cComponent"
+    return (<>
+       <div
         style={{
           backgroundImage: `url(${this.state.background})`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
+          backgroundSize: "100% 100%",
+          backgroundAttachment: "scroll",
           height: "100vh",
+          width: "100wh"
         }}
       >
         <Button
@@ -109,6 +110,7 @@ class App extends React.Component {
         </Button>
         <FrontPage />
       </div>
+      </>
     );
   }
 }

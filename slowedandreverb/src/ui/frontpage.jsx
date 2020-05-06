@@ -158,15 +158,18 @@ class FrontPage extends React.Component {
   }
 
   render() {
-    return (
-      <div className="Dropzone">
+    return (<>
+    <div className="Dropzone">
         <StyledDropzone setFile={this.setDropzoneFile} />
+        </div>
+        <div className="center">
         <Card
           style={{
             backgroundColor: "#bdbdbd",
             opacity: 0.8,
             paddingTop: 0,
             alignItems: "center",
+            width: 390
           }}
         >
           <CardContent>
@@ -254,7 +257,7 @@ class FrontPage extends React.Component {
                     <audio
                       src={this.state.blobUrl}
                       controls
-                      style={{ width: "390px" }}
+                      style={{ width: "380px" }}
                     ></audio>
                   </Box>
                 </div>
@@ -266,7 +269,8 @@ class FrontPage extends React.Component {
             <div className="center">{donateButton}</div>
           </CardContent>
         </Card>
-        {this.state.inProgress && <LinearProgress />}
+        </div>
+        {this.state.inProgress && <div className="center"><LinearProgress style={{width: 390}}/></div>}
         {this.state.blob ? (
           <>
             <div className="center">
@@ -283,7 +287,7 @@ class FrontPage extends React.Component {
             Slow a song down and you'll be able to test it out
           </Typography>
         )}
-      </div>
+      </>
     );
   }
 }
