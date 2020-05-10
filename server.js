@@ -5,12 +5,6 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const _ = require("lodash");
 var fs = require("fs");
-// ffmpeg
-var ffmpeg = require("fluent-ffmpeg");
-var command = ffmpeg();
-
-//sox
-var sox = require("sox-stream");
 
 // command line jaunt
 var execSync = require("child_process").execSync;
