@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import Button from "@material-ui/core/Button";
+import ReactGA from 'react-ga';
 
 import FrontPage from "./ui/frontpage";
 
@@ -55,10 +56,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // Call our fetch function below once the component mounts
-    this.callBackendAPI()
-      .then((res) => this.setState({ data: res.express }))
-      .catch((err) => console.log(err));
+    // Set up Google Analytics
+    ReactGA.initialize('UA-166259701-1');
+    ReactGA.pageview('/');
   }
 
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js

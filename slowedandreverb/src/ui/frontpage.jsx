@@ -101,6 +101,7 @@ class FrontPage extends React.Component {
     formData.append("reverb", this.state.reverb);
     formData.append("fileType", this.state.file.type);
 
+
     this.setState({ inProgress: true });
     const res = await fetch("/upload-song", {
       method: "POST",
