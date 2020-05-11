@@ -11,6 +11,7 @@ import { CustomizedSlider } from "./slider";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
+import ReactGA from "react-ga";
 
 var download = require("downloadjs");
 
@@ -70,6 +71,12 @@ class FrontPage extends React.Component {
     this.setControls = this.setControls.bind(this);
   }
 
+  componentDidMount() {
+    // Set up Google Analytics
+    ReactGA.initialize("UA-166259701-1");
+    ReactGA.pageview("/");
+  }
+
   reverbCheckbox() {
     const [checked, setChecked] = React.useState(false);
     const handleChange = (event) => {
@@ -101,6 +108,10 @@ class FrontPage extends React.Component {
     formData.append("reverb", this.state.reverb);
     formData.append("fileType", this.state.file.type);
 
+    ReactGA.event({
+      category: "Slow Button",
+      action: `Speed: ${this.state.speed}  Reverb: ${this.state.reverb}`,
+    });
 
     this.setState({ inProgress: true });
     const res = await fetch("/upload-song", {
@@ -159,119 +170,124 @@ class FrontPage extends React.Component {
   }
 
   render() {
-    return (<>
-    <div className="Dropzone">
-        <StyledDropzone setFile={this.setDropzoneFile} />
+    return (
+      <>
+        <div className="Dropzone">
+          <StyledDropzone setFile={this.setDropzoneFile} />
         </div>
         <div className="center">
-        <Card
-          style={{
-            backgroundColor: "#bdbdbd",
-            opacity: 0.8,
-            paddingTop: 0,
-            alignItems: "center",
-            width: 390
-          }}
-        >
-          <CardContent>
-            <div className="cardContents">
-              <div className="center">
-                <Box fontWeight="fontWeightBold" m={0} p={0}>
-                  <Typography>Speed: {this.state.speed * 100}%</Typography>
-                </Box>
-              </div>
-              <CustomizedSlider
-                defaultValue={1}
-                step={0.01}
-                min={0.6}
-                max={1}
-                onChange={this.handleSpeedSliderChange}
-              />
-              <div className="center">
-                <Box fontStyle="oblique" m={0} p={0}>
-                  <Typography>{this.state.speedMessage}</Typography>
-                </Box>
-              </div>
-              <this.reverbCheckbox />
-              <div>
-                {this.state.reverbChecked ? (
-                  <>
-                    <div className="center">
-                      <Box fontWeight="fontWeightBold" m={0} p={0}>
-                        <Typography>Reverb: {this.state.reverb}</Typography>
-                      </Box>
-                    </div>
-                    <CustomizedSlider
-                      value={this.state.reverb}
-                      step={1}
-                      min={0}
-                      max={100}
-                      onChange={this.handleReverbSliderChange}
-                    />
-                    <div className="center">
-                      <Box fontStyle="oblique" m={0} p={0}>
-                        <Typography>{this.state.reverbMessage}</Typography>
-                      </Box>
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="center">
-                <Box m={1}>
-                  <Button
-                    disabled={this.state.file === undefined}
-                    style={{
-                      backgroundColor: "#8c2fa8",
-                    }}
-                    variant="contained"
-                    color="primary"
-                    onClick={(acceptedFiles) => this.sendFileToServer()}
-                  >
-                    Slow it Down
-                  </Button>
-                </Box>
-              </div>
-            </div>
-            {this.state.blob && (
-              <>
-                <Divider />
+          <Card
+            style={{
+              backgroundColor: "#bdbdbd",
+              opacity: 0.8,
+              paddingTop: 0,
+              alignItems: "center",
+              width: 390,
+            }}
+          >
+            <CardContent>
+              <div className="cardContents">
+                <div className="center">
+                  <Box fontWeight="fontWeightBold" m={0} p={0}>
+                    <Typography>Speed: {this.state.speed * 100}%</Typography>
+                  </Box>
+                </div>
+                <CustomizedSlider
+                  defaultValue={1}
+                  step={0.01}
+                  min={0.6}
+                  max={1}
+                  onChange={this.handleSpeedSliderChange}
+                />
+                <div className="center">
+                  <Box fontStyle="oblique" m={0} p={0}>
+                    <Typography>{this.state.speedMessage}</Typography>
+                  </Box>
+                </div>
+                <this.reverbCheckbox />
+                <div>
+                  {this.state.reverbChecked ? (
+                    <>
+                      <div className="center">
+                        <Box fontWeight="fontWeightBold" m={0} p={0}>
+                          <Typography>Reverb: {this.state.reverb}</Typography>
+                        </Box>
+                      </div>
+                      <CustomizedSlider
+                        value={this.state.reverb}
+                        step={1}
+                        min={0}
+                        max={100}
+                        onChange={this.handleReverbSliderChange}
+                      />
+                      <div className="center">
+                        <Box fontStyle="oblique" m={0} p={0}>
+                          <Typography>{this.state.reverbMessage}</Typography>
+                        </Box>
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <div className="center">
                   <Box m={1}>
                     <Button
+                      disabled={this.state.file === undefined}
+                      style={{
+                        backgroundColor: "#8c2fa8",
+                      }}
                       variant="contained"
                       color="primary"
-                      onClick={() =>
-                        download(
-                          this.state.blob,
-                          "Slowed " + this.state.file.path
-                        )
-                      }
+                      onClick={(acceptedFiles) => this.sendFileToServer()}
                     >
-                      Download
+                      Slow it Down
                     </Button>
                   </Box>
                 </div>
-                <div className="center">
-                  <Box m={1}>
-                    <audio
-                      src={this.state.blobUrl}
-                      controls
-                      style={{ width: "380px" }}
-                    ></audio>
-                  </Box>
-                </div>
-                <Box mb={1}>
+              </div>
+              {this.state.blob && (
+                <>
                   <Divider />
-                </Box>
-              </>
-            )}
-            <div className="center">{donateButton}</div>
-          </CardContent>
-        </Card>
+                  <div className="center">
+                    <Box m={1}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          download(
+                            this.state.blob,
+                            "Slowed " + this.state.file.path
+                          )
+                        }
+                      >
+                        Download
+                      </Button>
+                    </Box>
+                  </div>
+                  <div className="center">
+                    <Box m={1}>
+                      <audio
+                        src={this.state.blobUrl}
+                        controls
+                        style={{ width: "380px" }}
+                      ></audio>
+                    </Box>
+                  </div>
+                  <Box mb={1}>
+                    <Divider />
+                  </Box>
+                </>
+              )}
+              <div className="center">{donateButton}</div>
+            </CardContent>
+          </Card>
         </div>
-        {this.state.inProgress && <div className="center"><LinearProgress style={{width: 390}}/></div>}
+        {this.state.inProgress && (
+          <div className="center">
+            <LinearProgress style={{ width: 390 }} />
+          </div>
+        )}
         {this.state.blob ? (
           <>
             <div className="center">

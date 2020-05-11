@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import Button from "@material-ui/core/Button";
-import ReactGA from 'react-ga';
 
 import FrontPage from "./ui/frontpage";
 
@@ -55,12 +54,6 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    // Set up Google Analytics
-    ReactGA.initialize('UA-166259701-1');
-    ReactGA.pageview('/');
-  }
-
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
   callBackendAPI = async () => {
     const response = await fetch("/express_backend");
@@ -86,30 +79,31 @@ class App extends React.Component {
 
   render() {
     document.title = "Slow + Reverb Generator";
-    return (<>
-       <div
-        style={{
-          backgroundImage: `url(${this.state.background})`,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%",
-          backgroundAttachment: "scroll",
-          height: "100vh",
-          width: "100wh"
-        }}
-      >
-        <Button
+    return (
+      <>
+        <div
           style={{
-            backgroundColor: "#8c2fa8",
+            backgroundImage: `url(${this.state.background})`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "100% 100%",
+            backgroundAttachment: "scroll",
+            height: "100vh",
+            width: "100wh",
           }}
-          variant="contained"
-          color="primary"
-          onClick={this.handleClick}
         >
-          Change Background Gif
-        </Button>
-        <FrontPage />
-      </div>
+          <Button
+            style={{
+              backgroundColor: "#8c2fa8",
+            }}
+            variant="contained"
+            color="primary"
+            onClick={this.handleClick}
+          >
+            Change Background Gif
+          </Button>
+          <FrontPage />
+        </div>
       </>
     );
   }
