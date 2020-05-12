@@ -11,6 +11,7 @@ import { CustomizedSlider } from "./slider";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
+import Link from "@material-ui/core/Link";
 import ReactGA from "react-ga";
 
 var download = require("downloadjs");
@@ -137,7 +138,7 @@ class FrontPage extends React.Component {
 
   handleSpeedSliderChange(value) {
     this.setState({ speed: value });
-    if (value >= 0.91) {
+    if (value >= 0.93) {
       this.setState({ speedMessage: "Slow it down some" });
     } else if (value >= 0.8) {
       this.setState({ speedMessage: "Recommended" });
@@ -172,9 +173,43 @@ class FrontPage extends React.Component {
   render() {
     return (
       <>
+        <div className="center">
+          <Typography
+            variant="h3"
+            style={{ fontFamily: "Courier New", color: "#ffffff" }}
+            gutterBottom
+          >
+            Slow + Reverb Generator
+          </Typography>
+        </div>
         <div className="Dropzone">
           <StyledDropzone setFile={this.setDropzoneFile} />
         </div>
+        <div className="center">
+          <Card
+            style={{
+              opacity: 0.8,
+              padding: 5,
+              marginBottom: 10,
+              alignItems: "center",
+              width: 390,
+            }}
+          >
+            <CardContent>
+              <div className="center">
+                <Box fontWeight="fontWeightBold" mt={-10} mb={-11} p={0}>
+                  <Typography>Don't have an audio file?</Typography>
+                  <Typography>
+                    <Link target="_blank" href="https://ytmp3.cc/en13/">
+                      Click Here to get an mp3 from a YouTube video
+                    </Link>
+                  </Typography>
+                </Box>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         <div className="center">
           <Card
             style={{
@@ -189,7 +224,11 @@ class FrontPage extends React.Component {
               <div className="cardContents">
                 <div className="center">
                   <Box fontWeight="fontWeightBold" m={0} p={0}>
-                    <Typography>Speed: {this.state.speed * 100}%</Typography>
+                    <Typography
+                      style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+                    >
+                      Speed: {this.state.speed * 100}%
+                    </Typography>
                   </Box>
                 </div>
                 <CustomizedSlider
@@ -200,8 +239,10 @@ class FrontPage extends React.Component {
                   onChange={this.handleSpeedSliderChange}
                 />
                 <div className="center">
-                  <Box fontStyle="oblique" m={0} p={0}>
-                    <Typography>{this.state.speedMessage}</Typography>
+                  <Box m={0} p={0}>
+                    <Typography style={{ fontFamily: "Courier New" }}>
+                      {this.state.speedMessage}
+                    </Typography>
                   </Box>
                 </div>
                 <this.reverbCheckbox />
@@ -209,8 +250,15 @@ class FrontPage extends React.Component {
                   {this.state.reverbChecked ? (
                     <>
                       <div className="center">
-                        <Box fontWeight="fontWeightBold" m={0} p={0}>
-                          <Typography>Reverb: {this.state.reverb}</Typography>
+                        <Box m={0} p={0}>
+                          <Typography
+                            style={{
+                              fontFamily: "Courier New",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Reverb: {this.state.reverb}
+                          </Typography>
                         </Box>
                       </div>
                       <CustomizedSlider
@@ -221,8 +269,10 @@ class FrontPage extends React.Component {
                         onChange={this.handleReverbSliderChange}
                       />
                       <div className="center">
-                        <Box fontStyle="oblique" m={0} p={0}>
-                          <Typography>{this.state.reverbMessage}</Typography>
+                        <Box m={0} p={0}>
+                          <Typography style={{ fontFamily: "Courier New" }}>
+                            {this.state.reverbMessage}
+                          </Typography>
                         </Box>
                       </div>
                     </>
@@ -254,6 +304,7 @@ class FrontPage extends React.Component {
                       <Button
                         variant="contained"
                         color="primary"
+                        style={{ fontFamily: "Courier New" }}
                         onClick={() =>
                           download(
                             this.state.blob,
@@ -294,13 +345,18 @@ class FrontPage extends React.Component {
               <Typography>{songName}</Typography>
             </div>
             <div className="center">
-              <Typography>
+              <Typography
+                style={{ fontFamily: "Courier New", color: "#ffffff" }}
+              >
                 Speed: {speed * 100}% Reverb: {reverb}
               </Typography>
             </div>
           </>
         ) : (
-          <Typography className="center">
+          <Typography
+            className="center"
+            style={{ fontFamily: "Courier New", color: "#ffffff" }}
+          >
             Slow a song down and you'll be able to test it out
           </Typography>
         )}
