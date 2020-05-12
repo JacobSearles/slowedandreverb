@@ -110,7 +110,7 @@ class FrontPage extends React.Component {
 
     ReactGA.event({
       category: "Slow Button",
-      action: `Speed: ${this.state.speed}  Reverb: ${this.state.reverb}`,
+      action: `Song: ${this.state.file.path}  Speed: ${this.state.speed}  Reverb: ${this.state.reverb}`,
     });
 
     this.setState({ inProgress: true });
