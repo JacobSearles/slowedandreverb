@@ -55,6 +55,11 @@
   opacity: 1;
 }
 
+.left {
+  display: flex;
+  align-content: left;
+}
+
 .card {
   align-items: center;
   padding-top: 30px;

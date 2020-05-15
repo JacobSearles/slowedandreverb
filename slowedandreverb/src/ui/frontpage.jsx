@@ -13,6 +13,8 @@ import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import Link from "@material-ui/core/Link";
 import ReactGA from "react-ga";
+import { AdvancedOptions } from "./advancedOptions";
+import { SelectBitrate } from "./dropDown";
 
 var download = require("downloadjs");
 
@@ -57,6 +59,12 @@ class FrontPage extends React.Component {
       reverbMessage: "None",
       speed: 1,
       reverb: 0,
+      hF: 50,
+      roomScale: 100,
+      stereoDepth: 100,
+      preDelay: 0,
+      wetGain: 0,
+      bitrate: 128,
       reverbChecked: false,
       file: undefined,
       blob: undefined,
@@ -69,7 +77,12 @@ class FrontPage extends React.Component {
     this.handleSpeedSliderChange = this.handleSpeedSliderChange.bind(this);
     this.handleReverbSliderChange = this.handleReverbSliderChange.bind(this);
     this.setDropzoneFile = this.setDropzoneFile.bind(this);
-    this.setControls = this.setControls.bind(this);
+    this.handleHFChange = this.handleHFChange.bind(this);
+    this.handleRoomScaleChange = this.handleRoomScaleChange.bind(this);
+    this.handleStereoDepthChange = this.handleStereoDepthChange.bind(this);
+    this.handlePreDelayChange = this.handlePreDelayChange.bind(this);
+    this.handleWetGainChange = this.handleWetGainChange.bind(this);
+    this.handleDropdownChange = this.handleDropdownChange.bind(this);
   }
 
   componentDidMount() {
@@ -92,26 +105,37 @@ class FrontPage extends React.Component {
             checked={checked}
             onChange={handleChange}
             inputProps={{ "aria-label": "primary checkbox" }}
+            size="small"
             style={{
               color: "#8c2fa8",
             }}
           />
         }
-        label="Add Reverb"
+        label="Advanced Options"
       />
     );
   }
 
   // Sends HTTP request for drag and dropped file
   sendFileToServer = async () => {
+    // add file and options to form data
     formData.append("song", this.state.file);
     formData.append("speed", this.state.speed);
     formData.append("reverb", this.state.reverb);
+    formData.append("advancedChecked", this.state.reverbChecked);
+    formData.append("hFDamping", this.state.hF);
+    console.log(this.state.roomScale);
+    formData.append("roomScale", this.state.roomScale);
+    formData.append("stereoDepth", this.state.stereoDepth);
+    formData.append("preDelay", this.state.preDelay);
+    formData.append("wetGain", this.state.wetGain);
+    formData.append("bitrate", this.state.bitrate);
     formData.append("fileType", this.state.file.type);
 
+    // Save event
     ReactGA.event({
       category: "Slow Button",
-      action: `Song: ${this.state.file.path}  Speed: ${this.state.speed}  Reverb: ${this.state.reverb}`,
+      action: `Song: ${this.state.file.path}  Speed: ${this.state.speed}  Reverb: ${this.state.reverb}  Advanced: ${this.state.reverbChecked}`,
     });
 
     this.setState({ inProgress: true });
@@ -166,8 +190,26 @@ class FrontPage extends React.Component {
     this.setState({ file: file });
   }
 
-  setControls() {
-    this.setState({ showControls: true });
+  // handle bitrate drop down
+  handleDropdownChange(value) {
+    this.setState({ bitrate: value });
+  }
+
+  // advanced options slider callbacks
+  handleHFChange(value) {
+    this.setState({ hF: value });
+  }
+  handleRoomScaleChange(value) {
+    this.setState({ roomScale: value });
+  }
+  handleStereoDepthChange(value) {
+    this.setState({ stereoDepth: value });
+  }
+  handlePreDelayChange(value) {
+    this.setState({ preDelay: value });
+  }
+  handleWetGainChange(value) {
+    this.setState({ wetGain: value });
   }
 
   render() {
@@ -182,6 +224,13 @@ class FrontPage extends React.Component {
             Slow + Reverb Generator
           </Typography>
         </div>
+        <Typography
+          className="center"
+          style={{ fontFamily: "Courier New", color: "#ffffff" }}
+        >
+          Add high quality Slow + Reverb effects to any song, and try it out
+          before downloading
+        </Typography>
         <div className="Dropzone">
           <StyledDropzone setFile={this.setDropzoneFile} />
         </div>
@@ -223,7 +272,7 @@ class FrontPage extends React.Component {
             <CardContent>
               <div className="cardContents">
                 <div className="center">
-                  <Box fontWeight="fontWeightBold" m={0} p={0}>
+                  <Box fontWeight="fontWeightBold" mb={-1} p={0}>
                     <Typography
                       style={{ fontFamily: "Courier New", fontWeight: "bold" }}
                     >
@@ -239,47 +288,53 @@ class FrontPage extends React.Component {
                   onChange={this.handleSpeedSliderChange}
                 />
                 <div className="center">
-                  <Box m={0} p={0}>
+                  <Box mt={-1} p={0}>
                     <Typography style={{ fontFamily: "Courier New" }}>
                       {this.state.speedMessage}
                     </Typography>
                   </Box>
                 </div>
-                <this.reverbCheckbox />
-                <div>
-                  {this.state.reverbChecked ? (
-                    <>
-                      <div className="center">
-                        <Box m={0} p={0}>
-                          <Typography
-                            style={{
-                              fontFamily: "Courier New",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Reverb: {this.state.reverb}
-                          </Typography>
-                        </Box>
-                      </div>
-                      <CustomizedSlider
-                        value={this.state.reverb}
-                        step={1}
-                        min={0}
-                        max={100}
-                        onChange={this.handleReverbSliderChange}
-                      />
-                      <div className="center">
-                        <Box m={0} p={0}>
-                          <Typography style={{ fontFamily: "Courier New" }}>
-                            {this.state.reverbMessage}
-                          </Typography>
-                        </Box>
-                      </div>
-                    </>
-                  ) : (
-                    <></>
-                  )}
+                <div className="center">
+                  <Box mb={-1} p={0}>
+                    <Typography
+                      style={{
+                        fontFamily: "Courier New",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Reverb: {this.state.reverb}%
+                    </Typography>
+                  </Box>
                 </div>
+                <CustomizedSlider
+                  value={this.state.reverb}
+                  step={1}
+                  min={0}
+                  max={100}
+                  onChange={this.handleReverbSliderChange}
+                />
+                <div className="center">
+                  <Box mt={-1} p={0}>
+                    <Typography style={{ fontFamily: "Courier New" }}>
+                      {this.state.reverbMessage}
+                    </Typography>
+                  </Box>
+                </div>
+                <div className="left">
+                  <this.reverbCheckbox />
+                </div>
+                {this.state.reverbChecked && (
+                  <>
+                    <AdvancedOptions
+                      onChangeHF={this.handleHFChange}
+                      onChangeRoomScale={this.handleRoomScaleChange}
+                      onChangeStereoDepth={this.handleStereoDepthChange}
+                      onChangePreDelay={this.handlePreDelayChange}
+                      onChangeWetGain={this.handleWetGainChange}
+                    />
+                    <SelectBitrate onChange={this.handleDropdownChange} />
+                  </>
+                )}
                 <div className="center">
                   <Box m={1}>
                     <Button
@@ -304,7 +359,6 @@ class FrontPage extends React.Component {
                       <Button
                         variant="contained"
                         color="primary"
-                        style={{ fontFamily: "Courier New" }}
                         onClick={() =>
                           download(
                             this.state.blob,
@@ -339,26 +393,23 @@ class FrontPage extends React.Component {
             <LinearProgress style={{ width: 390 }} />
           </div>
         )}
-        {this.state.blob ? (
+        {this.state.blob && (
           <>
             <div className="center">
-              <Typography>{songName}</Typography>
+              <Typography
+                style={{ fontFamily: "Courier New", color: "#ffffff" }}
+              >
+                {songName}
+              </Typography>
             </div>
             <div className="center">
               <Typography
                 style={{ fontFamily: "Courier New", color: "#ffffff" }}
               >
-                Speed: {speed * 100}% Reverb: {reverb}
+                Speed: {speed * 100}% Reverb: {reverb}%
               </Typography>
             </div>
           </>
-        ) : (
-          <Typography
-            className="center"
-            style={{ fontFamily: "Courier New", color: "#ffffff" }}
-          >
-            Slow a song down and you'll be able to test it out
-          </Typography>
         )}
       </>
     );

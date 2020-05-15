@@ -54,9 +54,16 @@ app.post("/upload-song", async (req, res) => {
       //save song in server temporarily
       let song = req.files.song;
 
-      //get the speed and reverb values
+      //get the option values
       let speed = req.body.speed;
       let reverb = req.body.reverb;
+      let advancedChecked = req.body.advancedChecked;
+      let hF = req.body.hFDamping;
+      let roomScale = req.body.roomScale;
+      let stereoDepth = req.body.stereoDepth;
+      let preDelay = req.body.preDelay;
+      let wetGain = req.body.wetGain;
+      let bitrate = req.body.bitrate;
 
       //determine file type
       var type;
@@ -81,18 +88,23 @@ app.post("/upload-song", async (req, res) => {
 
       //Add modifications to audio file and save it
       try {
-        console.log(`adding slow: ${speed} reverb: ${reverb}`);
-        if (reverb != 0) {
-          // Add slowed and reverb effects
-          // Use --norm to reduce clipping and normalize audio
-          child = execSync(
-            `sox --norm -t ${type} ${song.tempFilePath} ./SlowedSongs/${tempSongFilePath} speed ${speed} reverb ${reverb}`
-          );
-        } else {
+        console.log(
+          `adding slow: ${speed} reverb: ${reverb} advance: ${advancedChecked}`
+        );
+        if (advancedChecked == "false" && reverb == 0) {
           // Add just slowed effects
           // Use --norm to reduce clipping and normalize audio
           child = execSync(
             `sox --norm -t ${type} ${song.tempFilePath} ./SlowedSongs/${tempSongFilePath} speed ${speed}`
+          );
+        } else {
+          console.log(
+            `speed ${speed} reverb ${reverb} ${hF} ${roomScale} ${stereoDepth} ${preDelay} ${wetGain} bitrate: ${bitrate}`
+          );
+          // Add slowed and reverb effects
+          // Use --norm to reduce clipping and normalize audio
+          child = execSync(
+            `sox --norm -t ${type} ${song.tempFilePath} -C ${bitrate} ./SlowedSongs/${tempSongFilePath} speed ${speed} reverb ${reverb} ${hF} ${roomScale} ${stereoDepth} ${preDelay} ${wetGain}`
           );
         }
         // this runs if sox returns an error

@@ -85,6 +85,7 @@ class App extends React.Component {
           style={{
             backgroundImage: `url(${this.state.background})`,
             backgroundPosition: "center",
+            overflowY: "scroll",
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
             backgroundAttachment: "scroll",
