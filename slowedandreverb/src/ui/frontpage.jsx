@@ -393,6 +393,39 @@ class FrontPage extends React.Component {
             <LinearProgress style={{ width: 390 }} />
           </div>
         )}
+        <div className="center">
+          <Typography
+            style={{
+              fontFamily: "Courier New",
+              color: "#ffffff",
+            }}
+          >
+            Add song to your&nbsp;
+            <Link
+              target="_blank"
+              href="https://support.spotify.com/us/using_spotify/features/listen-to-local-files/"
+              underline="always"
+              style={{
+                fontFamily: "Courier New",
+                color: "#ffffff",
+              }}
+            >
+              Spotify
+            </Link>
+            &nbsp;or&nbsp;
+            <Link
+              target="_blank"
+              href="https://support.apple.com/guide/music/import-items-already-on-your-computer-mus3081/mac"
+              underline="always"
+              style={{
+                fontFamily: "Courier New",
+                color: "#ffffff",
+              }}
+            >
+              Apple Music
+            </Link>
+          </Typography>
+        </div>
         {this.state.blob && (
           <>
             <div className="center">
