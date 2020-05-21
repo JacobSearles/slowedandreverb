@@ -20,6 +20,8 @@ var download = require("downloadjs");
 
 let formData = new FormData();
 
+let eventNum = 1;
+
 var speed;
 var reverb;
 var songName;
@@ -136,7 +138,9 @@ class FrontPage extends React.Component {
     ReactGA.event({
       category: "Slow Button",
       action: `Song: ${this.state.file.path}  Speed: ${this.state.speed}  Reverb: ${this.state.reverb}  Advanced: ${this.state.reverbChecked}`,
+      value: eventNum,
     });
+    eventNum++;
 
     this.setState({ inProgress: true });
     const res = await fetch("/upload-song", {
