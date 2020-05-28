@@ -2,7 +2,7 @@
 slowed+reverb generator
 
 --------------------------------
-slowreverbgenerator.com
+[slowreverbgenerator.com](slowreverbgenerator.com)
 --------------------------------
 
 This is website I created to easily add high quality slow + reverb effects to any audio file. Simply drag and drop an audio file,
