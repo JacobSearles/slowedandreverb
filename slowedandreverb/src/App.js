@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import FrontPage from "./ui/frontpage";
 
 const backgroundImages = [
+  "https://cdnb.artstation.com/p/assets/images/images/014/665/033/original/yargon-kerman-webp-net-gifmaker-39.gif?1544919451",
+  "https://thumbs.gfycat.com/TeemingCleanBellsnake-size_restricted.gif",
   "https://cdn140.picsart.com/309995500237201.gif?to=min&r=1024",
   "https://i.pinimg.com/originals/ae/0d/3d/ae0d3d761ef0df692bf0b98b1ac35ca2.gif",
   "https://media.giphy.com/media/tVwYkNyossifS/giphy.gif",
