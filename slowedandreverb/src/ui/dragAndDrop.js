@@ -63,7 +63,7 @@ function StyledDropzone(props) {
       rejectedFiles.length > 0 &&
       rejectedFiles[0].size > audioFileMaxSize
     ) {
-      alert("File is too big");
+      alert("File is too big (max 300 megabytes)");
     }
     if (acceptedFiles && acceptedFiles.length > 0) {
       currFile = acceptedFiles[0];

@@ -124,10 +124,15 @@ app.post("/upload-song", async (req, res) => {
         } else {
           fs.unlink("./SlowedSongs/" + tempSongFilePath, function (err) {
             if (err) {
-              console.log("could not delete temp song file");
+              console.log("could not delete temp song file in /SlowedSongs/");
             }
           });
-        }
+          fs.unlink(song.tempFilePath, function (err) {
+	    if (err) {
+              console.log("could not delete temp song file in /tmp/");
+            }
+          });
+	}
       });
     }
   } catch (err) {
