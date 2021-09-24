@@ -388,6 +388,13 @@ class FrontPage extends React.Component {
                   </Box>
                 </>
               )}
+	      <Typography
+	        style={{
+		  fontSize: 12,
+		}}
+	      >
+	    	Help me cover server costs so I can keep the site up
+	      </Typography>
               <div className="center">{donateButton}</div>
             </CardContent>
           </Card>
