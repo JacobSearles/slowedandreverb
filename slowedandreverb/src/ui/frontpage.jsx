@@ -238,30 +238,6 @@ class FrontPage extends React.Component {
         <div className="Dropzone">
           <StyledDropzone setFile={this.setDropzoneFile} />
         </div>
-        <div className="center">
-          <Card
-            style={{
-              opacity: 0.8,
-              padding: 5,
-              marginBottom: 10,
-              alignItems: "center",
-              width: 390,
-            }}
-          >
-            <CardContent>
-              <div className="center">
-                <Box fontWeight="fontWeightBold" mt={-10} mb={-11} p={0}>
-                  <Typography>Don't have an audio file?</Typography>
-                  <Typography>
-                    <Link target="_blank" href="https://ytmp3.cc/en13/">
-                      Click Here to get an mp3 from a YouTube video
-                    </Link>
-                  </Typography>
-                </Box>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         <div className="center">
           <Card
