@@ -220,6 +220,9 @@ class FrontPage extends React.Component {
     return (
       <>
         <div className="center">
+	  {/* Ezoic - top_of_page - top_of_page */}
+	  <div id="ezoic-pub-ad-placeholder-101"> </div>
+	  {/* End Ezoic - top_of_page - top_of_page */}
           <Typography
             variant="h3"
             style={{ fontFamily: "Courier New", color: "#ffffff" }}
@@ -235,10 +238,15 @@ class FrontPage extends React.Component {
           Add high quality Slow + Reverb effects to any song, and try it out
           before downloading
         </Typography>
+	{/* Ezoic - under_page_title - under_page_title */}
+	<div id="ezoic-pub-ad-placeholder-102"> </div>
+	{/* End Ezoic - under_page_title - under_page_title */}
         <div className="Dropzone">
           <StyledDropzone setFile={this.setDropzoneFile} />
         </div>
-
+        {/* Ezoic - under_first_paragraph - under_first_paragraph */}
+	<div id="ezoic-pub-ad-placeholder-103"> </div>
+	{/* End Ezoic - under_first_paragraph - under_first_paragraph */}
         <div className="center">
           <Card
             style={{
@@ -429,6 +437,9 @@ class FrontPage extends React.Component {
                 Speed: {speed * 100}% Reverb: {reverb}%
               </Typography>
             </div>
+            {/* Ezoic - bottom_of_page - bottom_of_page */}
+	    <div id="ezoic-pub-ad-placeholder-108"> </div>
+	    {/* End Ezoic - bottom_of_page - bottom_of_page */}
           </>
         )}
       </>
