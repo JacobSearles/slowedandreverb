@@ -219,229 +219,251 @@ class FrontPage extends React.Component {
   render() {
     return (
       <>
-        <div className="center">
-	  {/* Ezoic - top_of_page - top_of_page */}
-	  <div id="ezoic-pub-ad-placeholder-101"> </div>
-	  {/* End Ezoic - top_of_page - top_of_page */}
-          <Typography
-            variant="h3"
-            style={{ fontFamily: "Courier New", color: "#ffffff" }}
-            gutterBottom
-          >
-            Slow + Reverb Generator
-          </Typography>
-        </div>
-        <Typography
-          className="center"
-          style={{ fontFamily: "Courier New", color: "#ffffff" }}
-        >
-          Add high quality Slow + Reverb effects to any song, and try it out
-          before downloading
-        </Typography>
-	{/* Ezoic - under_page_title - under_page_title */}
-	<div id="ezoic-pub-ad-placeholder-102"> </div>
-	{/* End Ezoic - under_page_title - under_page_title */}
-        <div className="Dropzone">
-          <StyledDropzone setFile={this.setDropzoneFile} />
-        </div>
-        {/* Ezoic - under_first_paragraph - under_first_paragraph */}
-	<div id="ezoic-pub-ad-placeholder-103"> </div>
-	{/* End Ezoic - under_first_paragraph - under_first_paragraph */}
-        <div className="center">
-          <Card
-            style={{
-              backgroundColor: "#bdbdbd",
-              opacity: 0.8,
-              paddingTop: 0,
-              alignItems: "center",
-              width: 390,
-            }}
-          >
-            <CardContent>
-              <div className="cardContents">
-                <div className="center">
-                  <Box fontWeight="fontWeightBold" mb={-1} p={0}>
-                    <Typography
-                      style={{ fontFamily: "Courier New", fontWeight: "bold" }}
-                    >
-                      Speed: {this.state.speed * 100}%
-                    </Typography>
-                  </Box>
-                </div>
-                <CustomizedSlider
-                  defaultValue={1}
-                  step={0.01}
-                  min={0.6}
-                  max={1}
-                  onChange={this.handleSpeedSliderChange}
-                />
-                <div className="center">
-                  <Box mt={-1} p={0}>
-                    <Typography style={{ fontFamily: "Courier New" }}>
-                      {this.state.speedMessage}
-                    </Typography>
-                  </Box>
-                </div>
-                <div className="center">
-                  <Box mb={-1} p={0}>
-                    <Typography
-                      style={{
-                        fontFamily: "Courier New",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Reverb: {this.state.reverb}%
-                    </Typography>
-                  </Box>
-                </div>
-                <CustomizedSlider
-                  value={this.state.reverb}
-                  step={1}
-                  min={0}
-                  max={100}
-                  onChange={this.handleReverbSliderChange}
-                />
-                <div className="center">
-                  <Box mt={-1} p={0}>
-                    <Typography style={{ fontFamily: "Courier New" }}>
-                      {this.state.reverbMessage}
-                    </Typography>
-                  </Box>
-                </div>
-                <div className="left">
-                  <this.reverbCheckbox />
-                </div>
-                {this.state.reverbChecked && (
-                  <>
-                    <AdvancedOptions
-                      onChangeHF={this.handleHFChange}
-                      onChangeRoomScale={this.handleRoomScaleChange}
-                      onChangeStereoDepth={this.handleStereoDepthChange}
-                      onChangePreDelay={this.handlePreDelayChange}
-                      onChangeWetGain={this.handleWetGainChange}
-                    />
-                    <SelectBitrate onChange={this.handleDropdownChange} />
-                  </>
-                )}
-                <div className="center">
-                  <Box m={1}>
-                    <Button
-                      disabled={this.state.file === undefined}
-                      style={{
-                        backgroundColor: "#8c2fa8",
-                      }}
-                      variant="contained"
-                      color="primary"
-                      onClick={(acceptedFiles) => this.sendFileToServer()}
-                    >
-                      Slow it Down
-                    </Button>
-                  </Box>
-                </div>
-              </div>
-              {this.state.blob && (
-                <>
-                  <Divider />
-                  <div className="center">
-                    <Box m={1}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() =>
-                          download(
-                            this.state.blob,
-                            "Slowed " + this.state.file.path
-                          )
-                        }
-                      >
-                        Download
-                      </Button>
-                    </Box>
-                  </div>
-                  <div className="center">
-                    <Box m={1}>
-                      <audio
-                        src={this.state.blobUrl}
-                        controls
-                        style={{ width: "380px" }}
-                      ></audio>
-                    </Box>
-                  </div>
-                  <Box mb={1}>
-                    <Divider />
-                  </Box>
-                </>
-              )}
-	      <Typography
-	        style={{
-		  fontSize: 12,
-		}}
-	      >
-	    	Help me cover server costs so I can keep the site up
-	      </Typography>
-              <div className="center">{donateButton}</div>
-            </CardContent>
-          </Card>
-        </div>
-        {this.state.inProgress && (
-          <div className="center">
-            <LinearProgress style={{ width: 390 }} />
+        <div align="center">
+          <div className="sidebarAds">
+            {/* Ezoic - sidebar - sidebar */}
+            <div id="ezoic-pub-ad-placeholder-104"> </div>
+            {/* End Ezoic - sidebar - sidebar */}
+            {/* Ezoic - sidebar_bottom - sidebar_bottom */}
+            <div id="ezoic-pub-ad-placeholder-106"> </div>
+            {/* End Ezoic - sidebar_bottom - sidebar_bottom */}
+
           </div>
-        )}
-        <div className="center">
-          <Typography
-            style={{
-              fontFamily: "Courier New",
-              color: "#ffffff",
-            }}
-          >
-            Add song to your&nbsp;
-            <Link
-              target="_blank"
-              href="https://support.spotify.com/us/using_spotify/features/listen-to-local-files/"
-              underline="always"
-              style={{
-                fontFamily: "Courier New",
-                color: "#ffffff",
-              }}
+
+          <div className="sidebarAds">
+            {/* Ezoic - top_of_page - top_of_page */}
+            <div id="ezoic-pub-ad-placeholder-101"> </div>
+            {/* End Ezoic - top_of_page - top_of_page */}
+            <div className="center">
+              <Typography
+                variant="h3"
+                style={{ fontFamily: "Courier New", color: "#ffffff" }}
+                gutterBottom
+              >
+                Slow + Reverb Generator
+              </Typography>
+            </div>
+            <Typography
+              className="center"
+              style={{ fontFamily: "Courier New", color: "#ffffff" }}
             >
-              Spotify
-            </Link>
-            &nbsp;or&nbsp;
-            <Link
-              target="_blank"
-              href="https://support.apple.com/guide/music/import-items-already-on-your-computer-mus3081/mac"
-              underline="always"
-              style={{
-                fontFamily: "Courier New",
-                color: "#ffffff",
-              }}
-            >
-              Apple Music
-            </Link>
-          </Typography>
+              Add high quality Slow + Reverb effects to any song, and try it out
+              before downloading
+            </Typography>
+            {/* Ezoic - under_page_title - under_page_title */}
+            <div id="ezoic-pub-ad-placeholder-102"> </div>
+            {/* End Ezoic - under_page_title - under_page_title */}
+            <div className="Dropzone">
+              <StyledDropzone setFile={this.setDropzoneFile} />
+            </div>
+            {/* Ezoic - under_first_paragraph - under_first_paragraph */}
+            <div id="ezoic-pub-ad-placeholder-103"> </div>
+            {/* End Ezoic - under_first_paragraph - under_first_paragraph */}
+            <div className="center">
+              <Card
+                style={{
+                  backgroundColor: "#bdbdbd",
+                  opacity: 0.8,
+                  paddingTop: 0,
+                  alignItems: "center",
+                  width: 390,
+                }}
+              >
+                <CardContent>
+                  <div className="cardContents">
+                    <div className="center">
+                      <Box fontWeight="fontWeightBold" mb={-1} p={0}>
+                        <Typography
+                          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+                        >
+                          Speed: {this.state.speed * 100}%
+                        </Typography>
+                      </Box>
+                    </div>
+                    <CustomizedSlider
+                      defaultValue={1}
+                      step={0.01}
+                      min={0.6}
+                      max={1}
+                      onChange={this.handleSpeedSliderChange}
+                    />
+                    <div className="center">
+                      <Box mt={-1} p={0}>
+                        <Typography style={{ fontFamily: "Courier New" }}>
+                          {this.state.speedMessage}
+                        </Typography>
+                      </Box>
+                    </div>
+                    <div className="center">
+                      <Box mb={-1} p={0}>
+                        <Typography
+                          style={{
+                            fontFamily: "Courier New",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Reverb: {this.state.reverb}%
+                        </Typography>
+                      </Box>
+                    </div>
+                    <CustomizedSlider
+                      value={this.state.reverb}
+                      step={1}
+                      min={0}
+                      max={100}
+                      onChange={this.handleReverbSliderChange}
+                    />
+                    <div className="center">
+                      <Box mt={-1} p={0}>
+                        <Typography style={{ fontFamily: "Courier New" }}>
+                          {this.state.reverbMessage}
+                        </Typography>
+                      </Box>
+                    </div>
+                    <div className="left">
+                      <this.reverbCheckbox />
+                    </div>
+                    {this.state.reverbChecked && (
+                      <>
+                        <AdvancedOptions
+                          onChangeHF={this.handleHFChange}
+                          onChangeRoomScale={this.handleRoomScaleChange}
+                          onChangeStereoDepth={this.handleStereoDepthChange}
+                          onChangePreDelay={this.handlePreDelayChange}
+                          onChangeWetGain={this.handleWetGainChange}
+                        />
+                        <SelectBitrate onChange={this.handleDropdownChange} />
+                      </>
+                    )}
+                    <div className="center">
+                      <Box m={1}>
+                        <Button
+                          disabled={this.state.file === undefined}
+                          style={{
+                            backgroundColor: "#8c2fa8",
+                          }}
+                          variant="contained"
+                          color="primary"
+                          onClick={(acceptedFiles) => this.sendFileToServer()}
+                        >
+                          Slow it Down
+                        </Button>
+                      </Box>
+                    </div>
+                  </div>
+                  {this.state.blob && (
+                    <>
+                      <Divider />
+                      <div className="center">
+                        <Box m={1}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() =>
+                              download(
+                                this.state.blob,
+                                "Slowed " + this.state.file.path
+                              )
+                            }
+                          >
+                            Download
+                          </Button>
+                        </Box>
+                      </div>
+                      <div className="center">
+                        <Box m={1}>
+                          <audio
+                            src={this.state.blobUrl}
+                            controls
+                            style={{ width: "380px" }}
+                          ></audio>
+                        </Box>
+                      </div>
+                      <Box mb={1}>
+                        <Divider />
+                      </Box>
+                    </>
+                  )}
+                  <Typography
+                    style={{
+                      fontSize: 12,
+                    }}
+                  >
+                    Help me cover server costs so I can keep the site up
+                  </Typography>
+                  <div className="center">{donateButton}</div>
+                </CardContent>
+              </Card>
+            </div>
+            {this.state.inProgress && (
+              <div className="center">
+                <LinearProgress style={{ width: 390 }} />
+              </div>
+            )}
+            <div className="center">
+              <Typography
+                style={{
+                  fontFamily: "Courier New",
+                  color: "#ffffff",
+                }}
+              >
+                Add song to your&nbsp;
+                <Link
+                  target="_blank"
+                  href="https://support.spotify.com/us/using_spotify/features/listen-to-local-files/"
+                  underline="always"
+                  style={{
+                    fontFamily: "Courier New",
+                    color: "#ffffff",
+                  }}
+                >
+                  Spotify
+                </Link>
+                &nbsp;or&nbsp;
+                <Link
+                  target="_blank"
+                  href="https://support.apple.com/guide/music/import-items-already-on-your-computer-mus3081/mac"
+                  underline="always"
+                  style={{
+                    fontFamily: "Courier New",
+                    color: "#ffffff",
+                  }}
+                >
+                  Apple Music
+                </Link>
+              </Typography>
+            </div>
+            {this.state.blob && (
+              <>
+                <div className="center">
+                  <Typography
+                    style={{ fontFamily: "Courier New", color: "#ffffff" }}
+                  >
+                    {songName}
+                  </Typography>
+                </div>
+                <div className="center">
+                  <Typography
+                    style={{ fontFamily: "Courier New", color: "#ffffff" }}
+                  >
+                    Speed: {speed * 100}% Reverb: {reverb}%
+                  </Typography>
+                </div>
+                {/* Ezoic - bottom_of_page - bottom_of_page */}
+                <div id="ezoic-pub-ad-placeholder-108"> </div>
+                {/* End Ezoic - bottom_of_page - bottom_of_page */}
+              </>
+            )}
+          </div>
+          <div className="sidebarAds">
+            {/* Ezoic - sidebar_middle - sidebar_middle */}
+            <div id="ezoic-pub-ad-placeholder-105"> </div>
+            {/* End Ezoic - sidebar_middle - sidebar_middle */}
+            {/* Ezoic - sidebar_floating_1 - sidebar_floating_1 */}
+            <div id="ezoic-pub-ad-placeholder-107"> </div>
+            {/* End Ezoic - sidebar_floating_1 - sidebar_floating_1 */}
+          </div>
         </div>
-        {this.state.blob && (
-          <>
-            <div className="center">
-              <Typography
-                style={{ fontFamily: "Courier New", color: "#ffffff" }}
-              >
-                {songName}
-              </Typography>
-            </div>
-            <div className="center">
-              <Typography
-                style={{ fontFamily: "Courier New", color: "#ffffff" }}
-              >
-                Speed: {speed * 100}% Reverb: {reverb}%
-              </Typography>
-            </div>
-            {/* Ezoic - bottom_of_page - bottom_of_page */}
-	    <div id="ezoic-pub-ad-placeholder-108"> </div>
-	    {/* End Ezoic - bottom_of_page - bottom_of_page */}
-          </>
-        )}
       </>
     );
   }
